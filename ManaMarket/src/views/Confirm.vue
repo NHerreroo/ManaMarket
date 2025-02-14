@@ -1,228 +1,219 @@
 <template>
-    <ion-page>
-      <ion-content class="ion-padding">
-        <div class="verification-container">
-          <!-- Logo -->
-          <div class="logo">
-            <div class="logo-icon">
-              <div class="logo-square white"></div>
-              <div class="logo-square orange"></div>
-            </div>
-            <span class="logo-text">MANA MARKET</span>
-          </div>
-  
-          <!-- Verification Form -->
-          <div class="verification-form">
-            <h1 class="title">Confirm</h1>
-            <p class="subtitle">
-              We have sent you a verification code to your email
-            </p>
-  
-            <form @submit.prevent="handleSubmit">
-              <!-- Code Input Boxes -->
-              <div class="code-inputs">
-                <ion-item v-for="(digit, index) in 4" :key="index" class="code-input">
-                  <ion-input
-                    type="text"
-                    maxlength="1"
-                    v-model="code[index]"
-                    @input="handleInput($event, index)"
-                    @keydown="handleKeydown($event, index)"
-                    :ref="el => inputRefs[index] = el"
-                  ></ion-input>
-                </ion-item>
-              </div>
-  
-              <!-- Resend Code Link -->
-              <div class="resend-code">
-                <ion-button fill="clear" @click="resendCode">
-                  resend code
-                </ion-button>
-              </div>
-  
-              <!-- Submit Button -->
-              <ion-button 
-                expand="block" 
-                type="submit" 
-                class="submit-btn"
-                :disabled="!isCodeComplete"
-              >
-                Verify
-              </ion-button>
-            </form>
-          </div>
+  <ion-page>
+    <div class="verification-container">
+      <!-- Logo -->
+      <div class="logo">
+        <div class="logo-icon">
+          <div class="logo-square white"></div>
+          <div class="logo-square orange"></div>
         </div>
-      </ion-content>
-    </ion-page>
-  </template>
-  
-  <script setup>
-  import { ref, computed } from 'vue'
-  import { 
-    IonPage, 
-    IonContent, 
-    IonButton, 
-    IonItem, 
-    IonInput 
-  } from '@ionic/vue'
-  
-  const code = ref(['', '', '', ''])
-  const inputRefs = ref([])
-  
-  const isCodeComplete = computed(() => {
-    return code.value.every(digit => digit !== '')
-  })
-  
-  const handleInput = (event, index) => {
-    const value = event.target.value
-    // Ensure only one character
-    code.value[index] = value.slice(-1)
-    
-    // Move to next input if available
-    if (value && index < 3) {
-      inputRefs.value[index + 1].$el.querySelector('input').focus()
-    }
+        <span class="logo-text">MANA MARKET</span>
+      </div>
+
+      <!-- Verification Form -->
+      <div class="verification-form">
+        <h1 class="title">Confirm</h1>
+        <p class="subtitle">We have sent you a verification code to your email</p>
+
+        <!-- Code Input -->
+        <div class="code-inputs">
+          <input 
+            v-for="(digit, index) in 4" 
+            :key="index"
+            type="text"
+            maxlength="1"
+            v-model="code[index]"
+            @input="handleInput($event, index)"
+            @keydown.backspace="handleBackspace($event, index)"
+            @paste="handlePaste"
+            ref="inputs"
+          />
+        </div>
+
+        <!-- Submit Button -->
+        <button 
+          class="submit-btn"
+          @click="handleSubmit"
+          :disabled="!isCodeComplete"
+        >
+          Verify
+        </button>
+      </div>
+    </div>
+  </ion-page>
+</template>
+
+<script setup>
+import { ref, computed } from 'vue'
+import { IonPage } from '@ionic/vue'
+
+const code = ref(['', '', '', ''])
+const inputs = ref([])
+
+const isCodeComplete = computed(() => {
+  return code.value.every(digit => digit !== '')
+})
+
+const handleInput = (event, index) => {
+  const value = event.target.value
+  // Ensure only numbers
+  if (!/^\d*$/.test(value)) {
+    code.value[index] = ''
+    return
   }
   
-  const handleKeydown = (event, index) => {
-    // Handle backspace
-    if (event.key === 'Backspace' && !code.value[index] && index > 0) {
-      code.value[index - 1] = ''
-      inputRefs.value[index - 1].$el.querySelector('input').focus()
-    }
+  // Move to next input
+  if (value && index < 3) {
+    inputs.value[index + 1].focus()
   }
+}
+
+const handleBackspace = (event, index) => {
+  if (!code.value[index] && index > 0) {
+    code.value[index - 1] = ''
+    inputs.value[index - 1].focus()
+  }
+}
+
+const handlePaste = (event) => {
+  event.preventDefault()
+  const pastedText = event.clipboardData.getData('text')
+  const numbers = pastedText.match(/\d/g)
   
-  const handleSubmit = () => {
-    const verificationCode = code.value.join('')
-    console.log('Submitting code:', verificationCode)
-    // Add your verification logic here
+  if (numbers) {
+    numbers.slice(0, 4).forEach((number, index) => {
+      code.value[index] = number
+    })
   }
-  
-  const resendCode = () => {
-    console.log('Resending verification code')
-    // Add your resend logic here
-  }
-  </script>
-  
-  <style scoped>
-  .verification-container {
-    min-height: 100vh;
-    background-color: black;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-  }
-  
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
-  }
-  
-  .logo-icon {
-    position: relative;
-    width: 24px;
-    height: 32px;
-  }
-  
-  .logo-square {
-    position: absolute;
-    width: 24px;
-    height: 32px;
-  }
-  
-  .logo-square.white {
-    background-color: white;
-    transform: rotate(-12deg);
-  }
-  
-  .logo-square.orange {
-    background-color: #E67E22;
-    transform: rotate(12deg);
-  }
-  
-  .logo-text {
-    color: white;
-    font-size: 1.25rem;
-    font-weight: bold;
-  }
-  
-  .verification-form {
-    width: 100%;
-    max-width: 24rem;
-    text-align: center;
-  }
-  
-  .title {
-    color: white;
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-  }
-  
-  .subtitle {
-    color: white;
-    font-size: 0.875rem;
-    margin-bottom: 2rem;
-  }
-  
-  .code-inputs {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: center;
-    margin-bottom: 1.5rem;
-  }
-  
-  .code-input {
-    width: 4rem;
-    height: 4rem;
-    --background: #1A1A1A;
-    --border-radius: 0.5rem;
-    --border-color: transparent;
-  }
-  
-  .code-input ion-input {
-    --color: white;
-    --placeholder-color: #666;
-    text-align: center;
-    font-size: 1.5rem;
-  }
-  
-  .resend-code {
-    margin-bottom: 1.5rem;
-  }
-  
-  .resend-code ion-button {
-    --color: #666;
-    text-transform: none;
-    font-size: 0.875rem;
-  }
-  
-  .resend-code ion-button:hover {
-    --color: #E67E22;
-  }
-  
-  .submit-btn {
-    --background: #E67E22;
-    --background-hover: #D35400;
-    --border-radius: 0.5rem;
-    --padding-top: 0.75rem;
-    --padding-bottom: 0.75rem;
-    font-weight: 500;
-  }
-  
-  /* Remove default Ionic styles */
-  ion-item {
-    --padding-start: 0;
-    --inner-padding-end: 0;
-    --background: transparent;
-  }
-  
-  ion-input {
-    --padding-start: 0;
-    --padding-end: 0;
-  }
-  </style>
+}
+
+const handleSubmit = () => {
+  const verificationCode = code.value.join('')
+  console.log('Verification code:', verificationCode)
+  // Add your verification logic here
+}
+</script>
+
+<style scoped>
+.verification-container {
+  min-height: 100vh;
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.logo-icon {
+  position: relative;
+  width: 24px;
+  height: 32px;
+}
+
+.logo-square {
+  position: absolute;
+  width: 24px;
+  height: 32px;
+}
+
+.logo-square.white {
+  background-color: white;
+  transform: rotate(-12deg);
+}
+
+.logo-square.orange {
+  background-color: #E67E22;
+  transform: rotate(12deg);
+}
+
+.logo-text {
+  color: white;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.verification-form {
+  width: 100%;
+  max-width: 24rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #666;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.code-inputs {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.code-inputs input {
+  width: 3.5rem;
+  height: 3.5rem;
+  background-color: #1A1A1A;
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  font-size: 1.5rem;
+  text-align: center;
+  outline: none;
+}
+
+.code-inputs input:focus {
+  box-shadow: 0 0 0 2px #E67E22;
+}
+
+.submit-btn {
+  width: 100%;
+  background-color: #E67E22;
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-weight: 500;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background-color: #D35400;
+}
+
+.submit-btn:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+}
+
+/* Remove default focus outline for better custom styling */
+button:focus,
+input:focus {
+  outline: none;
+}
+
+/* Remove spinner buttons from number inputs */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+</style>

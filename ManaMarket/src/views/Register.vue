@@ -46,7 +46,7 @@
           </div>
 
           <!-- Remember Me -->
-          <div class="remember-me-container">
+          <div class="form-footer">
             <label class="remember-me">
               <input type="checkbox" v-model="rememberMe" />
               <span>Remember Me</span>
@@ -54,15 +54,13 @@
           </div>
 
           <!-- Register Button -->
-          <button type="submit" class="register-btn">
+          <button type="submit" class="login-btn" @click="goToConfirm">
             Register
           </button>
         </form>
 
         <!-- Divider -->
-        <div class="divider">
-          <span class="divider-line"></span>
-        </div>
+        <div class="divider">Or</div>
 
         <!-- Google Button -->
         <button class="google-btn" @click="registerWithGoogle">
@@ -76,16 +74,28 @@
 
 <script setup>
 import { ref } from 'vue'
-import { IonPage } from '@ionic/vue'
+import { useRouter } from 'vue-router';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton } from '@ionic/vue'
 
+const router = useRouter();
 const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
 const rememberMe = ref(false)
+var form = false;
+
+const goToConfirm = () => {
+  if (form == true) {
+    router.push({ name: 'Confirm' });
+  }
+  
+};
+
 
 const handleSubmit = () => {
   // Handle form submission
   console.log('Form submitted')
+  form = true;
 }
 
 const registerWithGoogle = () => {
@@ -97,32 +107,31 @@ const registerWithGoogle = () => {
 <style scoped>
 .login-container {
   min-height: 100vh;
-  background-color: #121212;
+  background-color: black;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem;
+  padding: 1rem;
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 3rem;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
 }
 
 .logo-icon {
   position: relative;
-  width: 32px;
-  height: 40px;
+  width: 24px;
+  height: 32px;
 }
 
 .logo-square {
   position: absolute;
-  width: 32px;
-  height: 40px;
-  border-radius: 4px;
+  width: 24px;
+  height: 32px;
 }
 
 .logo-square.white {
@@ -137,21 +146,21 @@ const registerWithGoogle = () => {
 
 .logo-text {
   color: white;
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
+  font-size: 1.25rem;
+  font-weight: bold;
 }
 
 .login-form {
   width: 100%;
-  max-width: 400px;
+  max-width: 24rem;
 }
 
 .title {
   color: white;
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 600;
-  margin-bottom: 2rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
 }
 
 .form-group {
@@ -160,103 +169,98 @@ const registerWithGoogle = () => {
 
 .form-group input {
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: #1A1A1A;
   color: white;
-  padding: 1rem;
-  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
   border: none;
-  font-size: 1rem;
+  outline: none;
 }
 
-.form-group input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+.form-group input:focus {
+  box-shadow: 0 0 0 2px #E67E22;
 }
 
-.remember-me-container {
-  margin: 1.5rem 0;
+.form-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
 }
 
 .remember-me {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: white;
   cursor: pointer;
+  color: white;
+  font-size: 0.875rem;
 }
 
 .remember-me input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 0.25rem;
+  border-color: #666;
+  background-color: #1A1A1A;
   accent-color: #E67E22;
 }
 
-.register-btn {
+.login-btn {
   width: 100%;
   background-color: #E67E22;
   color: white;
-  padding: 1rem;
-  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
   border: none;
-  font-size: 1rem;
-  font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s;
+  font-weight: 500;
 }
 
-.register-btn:hover {
+.login-btn:hover {
   background-color: #D35400;
 }
 
 .divider {
-  margin: 2rem 0;
-  position: relative;
-  height: 1px;
-}
-
-.divider-line {
-  position: absolute;
-  width: 100%;
-  height: 1px;
-  background-color: rgba(255, 255, 255, 0.1);
+  color: #666;
+  text-align: center;
+  margin: 1rem;
 }
 
 .google-btn {
   width: 100%;
-  background-color: white;
+  background-color: #f1f1f1;
   color: #333;
-  padding: 1rem;
-  border-radius: 8px;
-  border: none;
-  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  border: none;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .google-btn:hover {
-  background-color: #f5f5f5;
+  background-color: #e1e1e1;
 }
 
 .google-btn img {
-  width: 20px;
-  height: 20px;
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
-@media (max-width: 480px) {
-  .login-container {
-    padding: 1rem;
-  }
-  
-  .title {
-    font-size: 1.75rem;
-  }
-  
-  .logo-text {
-    font-size: 1.25rem;
-  }
+/* Input placeholder color */
+input::placeholder {
+  color: #666;
+}
+
+/* Remove default focus outline for better custom styling */
+button:focus,
+input:focus {
+  outline: none;
 }
 </style>

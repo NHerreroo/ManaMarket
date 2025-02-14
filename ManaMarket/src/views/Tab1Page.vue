@@ -7,6 +7,8 @@
       </ion-header>
       <ion-content>
         <ion-button router-link="/tabs/tab1/secundaria">Tab 1 🥈 Secundaria (RL)</ion-button>
+
+        
       </ion-content>
   </ion-page>
 </template>

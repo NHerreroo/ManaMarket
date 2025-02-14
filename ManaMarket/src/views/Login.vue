@@ -40,7 +40,7 @@
               <input type="checkbox" v-model="rememberMe" />
               <span>Remember Me</span>
             </label>
-            <a href="#" class="forgot-password">Forgot your password?</a>
+            <a class="forgot-password">Forgot your password?</a>
           </div>
 
           <!-- Login Button -->
@@ -53,7 +53,7 @@
         <div class="create-account">
           <p>
             Don't have an account?
-            <a href="#">Create a account</a>
+            <a href="#" @click.prevent="goToRegister">Create a account</a>
           </p>
         </div>
       </div>
@@ -64,6 +64,13 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton } from '@ionic/vue'
+
+const router = useRouter();
+
+const goToRegister = () => {
+  router.push({ name: 'Register' });
+};
+
 </script>
 
 <style scoped>
