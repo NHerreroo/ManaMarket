@@ -7,18 +7,12 @@
     </ion-header>
     <ion-content>
       <div class="camera-container">
-        <!-- Vista previa de la cámara -->
-        <video 
-          ref="videoRef" 
-          class="camera-preview" 
-          autoplay 
-          playsinline
-          :class="{ 'camera-active': isCameraActive }"
-        ></video>
+        <!-- Botón para iniciar el escaneo -->
+        <ion-button @click="startScan">Start Scan</ion-button>
 
-        <!-- Overlay para el scanner -->
-        <div class="scan-overlay">
-          <div class="scan-area"></div>
+        <!-- Mostrar el resultado del escaneo -->
+        <div v-if="scannedBarcode" class="scan-result">
+          Scanned Barcode: {{ scannedBarcode }}
         </div>
 
         <!-- Mensaje de error de permisos -->
@@ -31,153 +25,88 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref } from 'vue';
 import { 
   IonPage, 
   IonHeader, 
   IonToolbar, 
   IonTitle, 
-  IonContent 
+  IonContent,
+  IonButton
 } from '@ionic/vue';
+import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 
-const videoRef = ref<HTMLVideoElement | null>(null);
-const isCameraActive = ref(false);
+const scannedBarcode = ref('');
 const errorMessage = ref('');
 
-// Iniciar la cámara
-const startCamera = async () => {
+const startScan = async () => {
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      video: {
-        facingMode: 'environment', // Usar cámara trasera
-        width: { ideal: 1920 },
-        height: { ideal: 1080 }
-      },
-      audio: false
-    });
+    // Verificar si estamos en un dispositivo móvil
+    if (!Capacitor.isNativePlatform()) {
+      errorMessage.value = 'Barcode scanning is only supported on mobile devices.';
+      return;
+    }
 
-    if (videoRef.value) {
-      videoRef.value.srcObject = stream;
-      isCameraActive.value = true;
-      errorMessage.value = '';
+    const { supported } = await BarcodeScanner.isSupported();
+    if (!supported) {
+      errorMessage.value = 'Barcode scanner is not supported on this device.';
+      return;
+    }
+
+    let { camera } = await BarcodeScanner.checkPermissions();
+    if (camera !== 'granted') {
+      const permission = await BarcodeScanner.requestPermissions();
+      if (permission.camera !== 'granted') {
+        errorMessage.value = 'Camera permission not granted.';
+        return;
+      }
+    }
+
+    const { barcodes } = await BarcodeScanner.scan({ formats: ['QR_CODE'] });
+
+    if (barcodes.length > 0) {
+      scannedBarcode.value = barcodes[0].rawValue || 'No data';
     }
   } catch (error) {
-    console.error('Error accessing camera:', error);
-    errorMessage.value = 'Please enable camera access to use the scanner';
+    console.error('Error scanning barcode:', error);
+    errorMessage.value = 'Error scanning barcode';
   }
 };
 
-// Detener la cámara
-const stopCamera = () => {
-  if (videoRef.value && videoRef.value.srcObject) {
-    const stream = videoRef.value.srcObject as MediaStream;
-    const tracks = stream.getTracks();
-    tracks.forEach(track => track.stop());
-    videoRef.value.srcObject = null;
-    isCameraActive.value = false;
-  }
-};
-
-// Iniciar la cámara cuando se monta el componente
-onMounted(() => {
-  startCamera();
-});
-
-// Limpiar cuando se desmonta el componente
-onUnmounted(() => {
-  stopCamera();
-});
 </script>
 
 <style scoped>
 .camera-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background-color: #000;
-  overflow: hidden;
-}
-
-.camera-preview {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transform: scaleX(-1); /* Descomenta si necesitas espejo */
-}
-
-.scan-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100vh;
+  background-color: #000;
+  color: white;
+  padding: 20px;
 }
 
-.scan-area {
-  width: 80%;
-  height: 50%;
-  border: 2px solid #E67E22;
-  border-radius: 10px;
-  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+.scan-result {
+  margin-top: 20px;
+  color: white;
+  font-size: 1.2rem;
+  text-align: center;
 }
 
 .error-message {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 1rem;
-  border-radius: 8px;
+  margin-top: 20px;
+  color: red;
+  font-size: 1rem;
   text-align: center;
-  max-width: 80%;
 }
 
-/* Animación cuando la cámara está activa */
-.camera-active {
-  animation: fadeIn 0.3s ease-in;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-/* Asegurarse de que el contenido ocupe toda la pantalla */
 ion-content {
   --background: #000;
 }
 
-ion-content::part(scroll) {
-  display: flex;
-  flex-direction: column;
-}
-
-/* Ajustes para la toolbar */
 ion-toolbar {
-  --background: transparent;
+  --background: rgba(0, 0, 0, 0.8);
   --color: white;
-}
-
-/* Hacer la toolbar flotante sobre la cámara */
-ion-header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1;
-}
-
-ion-header::after {
-  display: none;
 }
 </style>
