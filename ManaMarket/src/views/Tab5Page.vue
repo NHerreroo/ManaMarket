@@ -1,112 +1,130 @@
+<script setup lang="ts">
+import {
+  IonPage,
+  IonContent,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonNote,
+  IonInput,
+  IonLabel,
+  IonButton,
+  IonIcon,
+  alertController,
+  IonFooter,
+  IonFabButton,
+} from "@ionic/vue";
+
+import { Barcode, BarcodeScanner } from "@capacitor-mlkit/barcode-scanning";
+import { scan, openOutline, trashBinOutline } from "ionicons/icons";
+import { onMounted, ref } from "vue";
+import { Capacitor } from "@capacitor/core";
+
+const isSupported = ref(false);
+const videoElement = ref<HTMLVideoElement | null>(null); // Referencia al elemento de video
+
+onMounted(async () => {
+  if (Capacitor.isNativePlatform()) {
+    const { supported } = await BarcodeScanner.isSupported();
+    isSupported.value = supported;
+
+    if (!isSupported.value) {
+      presentAlert("Error", "Barcode Scanner is not supported on this device.");
+    } else {
+      startScanning(); // Iniciar la cámara automáticamente en dispositivos nativos
+    }
+  } else {
+    isSupported.value = true; // Asumimos que la web es compatible
+    startScanning(); // Iniciar la cámara automáticamente en la web
+  }
+});
+
+const startScanning = async () => {
+  if (Capacitor.isNativePlatform()) {
+    const granted = await requestPermissions();
+    if (!granted) {
+      presentAlert("Permission denied", "Please grant camera permission to use the barcode scanner.");
+      return;
+    }
+
+    try {
+      const { barcodes } = await BarcodeScanner.scan();
+      if (barcodes.length > 0) {
+        // Aquí puedes manejar los códigos escaneados si es necesario
+        console.log("Barcodes scanned:", barcodes);
+      }
+    } catch (error) {
+      console.error("Error scanning barcode:", error);
+      presentAlert("Scan Error", "There was an issue scanning the barcode.");
+    }
+  } else {
+    // Verificar si el contexto es seguro (https o localhost)
+    if (!isSecureContext()) {
+      presentAlert("Insecure Context", "Camera access is only allowed in secure contexts (https or localhost).");
+      return;
+    }
+
+    // Usar la API de getUserMedia para la web
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+
+      // Asignar el flujo de video al elemento <video>
+      if (videoElement.value) {
+        videoElement.value.srcObject = stream;
+        videoElement.value.play();
+      }
+    } catch (error) {
+      console.error("Error accessing camera:", error);
+      presentAlert("Camera Error", "There was an issue accessing the camera.");
+    }
+  }
+};
+
+const requestPermissions = async () => {
+  const { camera } = await BarcodeScanner.requestPermissions();
+  return camera === "granted" || camera === "limited";
+};
+
+const presentAlert = async (hdr: string, msg: string) => {
+  const alert = await alertController.create({
+    header: hdr,
+    message: msg,
+    buttons: ["OK"],
+  });
+  await alert.present();
+};
+
+// Función para verificar si el contexto es seguro
+const isSecureContext = () => {
+  return window.isSecureContext;
+};
+</script>
+
 <template>
   <ion-page>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Scanner</ion-title>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content>
-      <div class="camera-container">
-        <!-- Botón para iniciar el escaneo -->
-        <ion-button @click="startScan">Start Scan</ion-button>
-
-        <!-- Mostrar el resultado del escaneo -->
-        <div v-if="scannedBarcode" class="scan-result">
-          Scanned Barcode: {{ scannedBarcode }}
-        </div>
-
-        <!-- Mensaje de error de permisos -->
-        <div v-if="errorMessage" class="error-message">
-          {{ errorMessage }}
-        </div>
-      </div>
+    <ion-content class="camera-container">
+      <!-- Vista previa de la cámara -->
+      <video ref="videoElement" autoplay playsinline class="camera-preview" v-if="isSupported"></video>
     </ion-content>
   </ion-page>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
-import { 
-  IonPage, 
-  IonHeader, 
-  IonToolbar, 
-  IonTitle, 
-  IonContent,
-  IonButton
-} from '@ionic/vue';
-import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
-
-const scannedBarcode = ref('');
-const errorMessage = ref('');
-
-const startScan = async () => {
-  try {
-    // Verificar si estamos en un dispositivo móvil
-    if (!Capacitor.isNativePlatform()) {
-      errorMessage.value = 'Barcode scanning is only supported on mobile devices.';
-      return;
-    }
-
-    const { supported } = await BarcodeScanner.isSupported();
-    if (!supported) {
-      errorMessage.value = 'Barcode scanner is not supported on this device.';
-      return;
-    }
-
-    let { camera } = await BarcodeScanner.checkPermissions();
-    if (camera !== 'granted') {
-      const permission = await BarcodeScanner.requestPermissions();
-      if (permission.camera !== 'granted') {
-        errorMessage.value = 'Camera permission not granted.';
-        return;
-      }
-    }
-
-    const { barcodes } = await BarcodeScanner.scan({ formats: ['QR_CODE'] });
-
-    if (barcodes.length > 0) {
-      scannedBarcode.value = barcodes[0].rawValue || 'No data';
-    }
-  } catch (error) {
-    console.error('Error scanning barcode:', error);
-    errorMessage.value = 'Error scanning barcode';
-  }
-};
-
-</script>
-
 <style scoped>
 .camera-container {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #000;
-  color: white;
-  padding: 20px;
+  height: 100vh; /* Ocupa toda la altura de la pantalla */
+  overflow: hidden; /* Evita el desplazamiento */
+  background: black; /* Fondo negro para áreas no cubiertas por la cámara */
 }
 
-.scan-result {
-  margin-top: 20px;
-  color: white;
-  font-size: 1.2rem;
-  text-align: center;
-}
-
-.error-message {
-  margin-top: 20px;
-  color: red;
-  font-size: 1rem;
-  text-align: center;
-}
-
-ion-content {
-  --background: #000;
-}
-
-ion-toolbar {
-  --background: rgba(0, 0, 0, 0.8);
-  --color: white;
+.camera-preview {
+  width: 100%; /* Ocupa todo el ancho disponible */
+  height: 100vh; /* Ocupa toda la altura de la pantalla */
+  object-fit: cover; /* Asegura que el video cubra toda el área sin distorsionar */
 }
 </style>
