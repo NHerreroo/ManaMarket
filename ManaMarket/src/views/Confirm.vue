@@ -46,6 +46,9 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { IonPage } from '@ionic/vue'
+import { useRouter } from 'vue-router' // Importa el enrutador
+
+const router = useRouter() // Obtén la instancia del enrutador
 
 const code = ref(['', '', '', ''])
 const inputs = ref([])
@@ -89,8 +92,8 @@ const handlePaste = (event) => {
 
 const handleSubmit = () => {
   const verificationCode = code.value.join('')
-  console.log('Verification code:', verificationCode)
-  // Add your verification logic here
+  // Redirige a la ruta tabs/tab1
+  router.push({ path: '/tabs/tab1' })
 }
 </script>
 

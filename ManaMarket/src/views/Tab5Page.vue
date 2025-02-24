@@ -2,28 +2,19 @@
 import {
   IonPage,
   IonContent,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonNote,
-  IonInput,
-  IonLabel,
   IonButton,
   IonIcon,
   alertController,
-  IonFooter,
-  IonFabButton,
+  onIonViewWillLeave, // Hook de Ionic para cuando la vista está a punto de ser abandonada
 } from "@ionic/vue";
 
-import { Barcode, BarcodeScanner } from "@capacitor-mlkit/barcode-scanning";
-import { scan, openOutline, trashBinOutline } from "ionicons/icons";
+import { BarcodeScanner } from "@capacitor-mlkit/barcode-scanning";
+import { scan } from "ionicons/icons";
 import { onMounted, ref } from "vue";
 import { Capacitor } from "@capacitor/core";
 
 const isSupported = ref(false);
+const isScanning = ref(false); // Estado para controlar si se está escaneando
 const videoElement = ref<HTMLVideoElement | null>(null); // Referencia al elemento de video
 
 onMounted(async () => {
@@ -33,16 +24,21 @@ onMounted(async () => {
 
     if (!isSupported.value) {
       presentAlert("Error", "Barcode Scanner is not supported on this device.");
-    } else {
-      startScanning(); // Iniciar la cámara automáticamente en dispositivos nativos
     }
   } else {
     isSupported.value = true; // Asumimos que la web es compatible
-    startScanning(); // Iniciar la cámara automáticamente en la web
   }
 });
 
+// Reiniciar el estado cuando la vista está a punto de ser abandonada
+onIonViewWillLeave(() => {
+  isScanning.value = false; // Reiniciar el estado de escaneo
+  stopCamera(); // Detener la cámara si está activa
+});
+
 const startScanning = async () => {
+  isScanning.value = true; // Activar el modo de escaneo
+
   if (Capacitor.isNativePlatform()) {
     const granted = await requestPermissions();
     if (!granted) {
@@ -83,6 +79,15 @@ const startScanning = async () => {
   }
 };
 
+const stopCamera = () => {
+  if (videoElement.value && videoElement.value.srcObject) {
+    const stream = videoElement.value.srcObject as MediaStream;
+    const tracks = stream.getTracks();
+    tracks.forEach((track) => track.stop()); // Detener todas las pistas de la cámara
+    videoElement.value.srcObject = null; // Limpiar la referencia
+  }
+};
+
 const requestPermissions = async () => {
   const { camera } = await BarcodeScanner.requestPermissions();
   return camera === "granted" || camera === "limited";
@@ -105,9 +110,18 @@ const isSecureContext = () => {
 
 <template>
   <ion-page>
-    <ion-content class="camera-container">
-      <!-- Vista previa de la cámara -->
-      <video ref="videoElement" autoplay playsinline class="camera-preview" v-if="isSupported"></video>
+    <ion-content class="camera-container" :scroll-y="!isScanning"> <!-- Desactivar scroll cuando se está escaneando -->
+      <!-- Mostrar mensaje y botón si no se está escaneando -->
+      <div v-if="!isScanning" class="scan-prompt">
+        <h1>¡Escanea tus cartas y sácales partido!</h1>
+        <ion-button @click="startScanning" expand="block">
+          <ion-icon :icon="scan" slot="start"></ion-icon>
+          Escanear
+        </ion-button>
+      </div>
+
+      <!-- Mostrar la cámara cuando se esté escaneando -->
+      <video v-if="isScanning && isSupported" ref="videoElement" autoplay playsinline class="camera-preview"></video>
     </ion-content>
   </ion-page>
 </template>
@@ -120,6 +134,12 @@ const isSecureContext = () => {
   height: 100vh; /* Ocupa toda la altura de la pantalla */
   overflow: hidden; /* Evita el desplazamiento */
   background: black; /* Fondo negro para áreas no cubiertas por la cámara */
+}
+
+.scan-prompt {
+  text-align: center;
+  color: white;
+  padding: 20px;
 }
 
 .camera-preview {

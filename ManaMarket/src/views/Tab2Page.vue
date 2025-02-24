@@ -14,66 +14,74 @@
           </button>
         </div>
 
-        <!-- Filters Grid -->
-        <div class="filters-grid">
-          <!-- Primera fila -->
-          <div class="filters-row">
-            <div class="filter-group">
-              <label>Language</label>
-              <select class="filter-select">
-                <option>All</option>
-              </select>
+        <!-- Filter Toggle Button -->
+        <button class="filter-toggle" @click="showFilters = !showFilters">
+          <span>Filters</span>
+          <ion-icon :icon="chevronDownOutline" :class="{'rotate': showFilters}"></ion-icon>
+        </button>
+
+        <!-- Filters Section -->
+        <div class="filters-section" :class="{'expanded': showFilters}">
+          <div class="filters-grid">
+            <!-- Primera fila -->
+            <div class="filters-row">
+              <div class="filter-group">
+                <label>Language</label>
+                <select class="filter-select">
+                  <option>All</option>
+                </select>
+              </div>
+
+              <div class="filter-group">
+                <label>Expansion</label>
+                <select class="filter-select">
+                  <option>All</option>
+                </select>
+              </div>
             </div>
 
-            <div class="filter-group">
-              <label>Expansion</label>
-              <select class="filter-select">
-                <option>All</option>
-              </select>
-            </div>
-          </div>
+            <!-- Segunda fila -->
+            <div class="filters-row">
+              <div class="filter-group price-input-container">
+                <label>Min. Price</label>
+                <input type="number" placeholder="0.00" class="filter-input" />
+              </div>
 
-          <!-- Segunda fila -->
-          <div class="filters-row">
-            <div class="filter-group price-input-container">
-              <label>Min. Price</label>
-              <input type="number" placeholder="0.00" class="filter-input" />
-            </div>
+              <div class="filter-group price-input-container">
+                <label>Max. Price</label>
+                <input type="number" placeholder="0.00" class="filter-input" />
+              </div>
 
-            <div class="filter-group price-input-container">
-              <label>Max. Price</label>
-              <input type="number" placeholder="0.00" class="filter-input" />
-            </div>
-
-            <div class="filter-group">
-              <label>Min Condition</label>
-              <select class="filter-select">
-                <option>Poor</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Tercera fila -->
-          <div class="filters-row">
-            <div class="filter-group">
-              <label>Foil?</label>
-              <select class="filter-select">
-                <option>Any</option>
-              </select>
+              <div class="filter-group">
+                <label>Min Condition</label>
+                <select class="filter-select">
+                  <option>Poor</option>
+                </select>
+              </div>
             </div>
 
-            <div class="filter-group">
-              <label>Rarity</label>
-              <select class="filter-select">
-                <option>Rare</option>
-              </select>
-            </div>
+            <!-- Tercera fila -->
+            <div class="filters-row">
+              <div class="filter-group">
+                <label>Foil?</label>
+                <select class="filter-select">
+                  <option>Any</option>
+                </select>
+              </div>
 
-            <div class="filter-group">
-              <label>Altered</label>
-              <select class="filter-select">
-                <option>Any</option>
-              </select>
+              <div class="filter-group">
+                <label>Rarity</label>
+                <select class="filter-select">
+                  <option>Rare</option>
+                </select>
+              </div>
+
+              <div class="filter-group">
+                <label>Altered</label>
+                <select class="filter-select">
+                  <option>Any</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -83,8 +91,11 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import { IonPage, IonContent, IonIcon } from '@ionic/vue';
-import { searchOutline } from 'ionicons/icons';
+import { searchOutline, cartOutline, cameraOutline, chevronDownOutline } from 'ionicons/icons';
+
+const showFilters = ref(false); // Estado para controlar si los filtros están visibles
 </script>
 
 <style scoped>
@@ -101,7 +112,7 @@ import { searchOutline } from 'ionicons/icons';
 
 .search-bar {
   position: relative;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .search-input {
@@ -139,6 +150,40 @@ import { searchOutline } from 'ionicons/icons';
 .search-icon {
   color: white;
   font-size: 1.5rem;
+}
+
+.filter-toggle {
+  width: 100%;
+  background-color: #E67E22;
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  padding: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.filter-toggle ion-icon {
+  transition: transform 0.3s ease;
+}
+
+.filter-toggle ion-icon.rotate {
+  transform: rotate(180deg);
+}
+
+.filters-section {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.filters-section.expanded {
+  max-height: 500px; /* Ajusta este valor según la altura de tus filtros */
+  margin-bottom: 1rem;
 }
 
 .filters-grid {
@@ -198,15 +243,6 @@ input::placeholder {
   color: #666;
 }
 
-/* Select arrow styling */
-select {
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 0.75rem center;
-  background-size: 1em;
-  padding-right: 2rem;
-}
 
 /* Focus states */
 .search-input:focus,

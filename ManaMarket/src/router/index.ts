@@ -24,6 +24,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/tabs/',
+    name: 'tabs',
     component: TabsPage,
     children: [
       {
