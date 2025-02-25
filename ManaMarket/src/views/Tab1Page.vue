@@ -9,14 +9,9 @@
         <!-- Trending Cards Section -->
         <div class="trending-section">
           <h2 class="trending-title">TRENDING CARDS</h2>
-          <swiper
-            :modules="[SwiperAutoplay, SwiperPagination, SwiperNavigation]"
-            :slides-per-view="3"
-            :space-between="20"
-            :pagination="{ clickable: true }"
-            :navigation="false"
-            :autoplay="{ delay: 3000, disableOnInteraction: false }"
-            :breakpoints="{
+          <swiper :modules="[SwiperAutoplay, SwiperPagination, SwiperNavigation]" :slides-per-view="3"
+            :space-between="20" :pagination="{ clickable: true }" :navigation="false"
+            :autoplay="{ delay: 3000, disableOnInteraction: false }" :breakpoints="{
               '640': {
                 slidesPerView: 2,
                 spaceBetween: 15,
@@ -25,16 +20,14 @@
                 slidesPerView: 3,
                 spaceBetween: 20,
               },
-            }"
-            class="trending-carousel"
-          >
+            }" class="trending-carousel">
             <swiper-slide v-for="(card, index) in trendingCards" :key="index">
               <ion-card class="card-item">
                 <ion-img :src="card.image" :alt="card.name" class="card-image"></ion-img>
               </ion-card>
             </swiper-slide>
           </swiper>
-          <button class="all-cards-btn">
+          <button class="all-cards-btn" @click="goToCards">
             Explore New Cards
           </button>
         </div>
@@ -75,6 +68,15 @@ import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const goToCards = () => {
+  router.push({ path: '/tabs/tab2/' }); // Usa router.push con la ruta correcta
+};
+
+
 
 // Rename the modules to avoid conflicts
 const SwiperAutoplay = Autoplay;
@@ -97,7 +99,7 @@ const newsItems = [
     title: 'Mana Crypt Banned forever from the game.',
     author: 'olexmartin153',
     time: '1h ago',
-    thumbnail: '/placeholder.svg?height=80&width=80'
+    thumbnail: 'https://cards.scryfall.io/art_crop/front/4/d/4d960186-4559-4af0-bd22-63baa15f8939.jpg?1727298349'
   },
   {
     title: 'Mana Crypt Banned forever from the game.',
@@ -140,7 +142,7 @@ const newsItems = [
     author: 'olexmartin153',
     time: '1h ago',
     thumbnail: '/placeholder.svg?height=80&width=80'
-  },  {
+  }, {
     title: 'Mana Crypt Banned forever from the game.',
     author: 'olexmartin153',
     time: '1h ago',
@@ -165,15 +167,19 @@ const newsItems = [
 /* Estilos actualizados para el carrusel */
 .trending-carousel {
   width: 100%;
-  height: 180px; /* Altura reducida */
-  padding: 10px 0; /* Padding reducido */
+  height: 180px;
+  /* Altura reducida */
+  padding: 10px 0;
+  /* Padding reducido */
 }
 
 .card-item {
   margin: 0;
   background: #2a2a2a;
-  height: 130px; /* Altura fija más pequeña */
-  width: 90px; /* Ancho fijo más pequeño */
+  height: 130px;
+  /* Altura fija más pequeña */
+  width: 90px;
+  /* Ancho fijo más pequeño */
 }
 
 .card-image {
@@ -186,17 +192,20 @@ const newsItems = [
 .trending-carousel :deep(.swiper-button-next),
 .trending-carousel :deep(.swiper-button-prev) {
   color: #E67E22;
-  transform: scale(0.7); /* Hace las flechas más pequeñas */
+  transform: scale(0.7);
+  /* Hace las flechas más pequeñas */
 }
 
 .trending-carousel :deep(.swiper-button-next):after,
 .trending-carousel :deep(.swiper-button-prev):after {
-  font-size: 20px; /* Tamaño de flecha más pequeño */
+  font-size: 20px;
+  /* Tamaño de flecha más pequeño */
 }
 
 .trending-carousel :deep(.swiper-pagination-bullet) {
   background: #fff;
-  width: 6px; /* Bullets más pequeños */
+  width: 6px;
+  /* Bullets más pequeños */
   height: 6px;
 }
 
@@ -220,26 +229,29 @@ const newsItems = [
   cursor: pointer;
   transition: background-color 0.2s;
   font-weight: 500;
-  margin: 10px 0; /* Margen reducido */
+  margin: 10px 0;
+  /* Margen reducido */
 }
 
 .news-title {
   font-size: 2rem;
   font-weight: bold;
   color: white;
-  margin-bottom: 1rem; /* Margen reducido */
+  margin-bottom: 1rem;
+  /* Margen reducido */
 }
 
 .trending-title {
   font-size: 1.2rem;
   color: white;
-  margin-bottom: .5rem; /* Margen reducido */
+  margin-bottom: .5rem;
+  /* Margen reducido */
 }
 
 .news-item {
   margin-bottom: 1rem;
   background: #2a2a2a;
   border-radius: 1rem;
-}
 
+}
 </style>

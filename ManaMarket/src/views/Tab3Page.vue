@@ -17,7 +17,7 @@
 
         <!-- Cards Grid -->
         <div class="cards-grid">
-          <div v-for="deck in decks" :key="deck.name" class="deck-card">
+          <div v-for="deck in decks" :key="deck.name" class="deck-card" @click="viewdeck">
             <div class="deck-content" :style="{ backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url(${deck.background || deck.card1})` }">
               <div class="mana-dots">
                 <div v-for="(color, index) in deck.mana" 
@@ -55,6 +55,11 @@ const router = useRouter(); // Instancia de router
 const goToCard = () => {
   router.push({ path: '/tabs/tab3/collection' }); // Usa router.push con la ruta correcta
 };
+
+const viewdeck = () => {
+  router.push({ path: '/tabs/tab3/deck' }); // Usa router.push con la ruta correcta
+};
+
 
 const getManaClass = (color) => {
   const classes = {

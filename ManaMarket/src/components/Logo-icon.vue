@@ -1,4 +1,4 @@
-e<template>
+<template>
     <div class="logo">
       <div class="logo-icon">
         <div class="logo-square orange"></div>

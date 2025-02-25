@@ -4,13 +4,15 @@
       <HeaderLogo/>
       <div class="content-wrapper">
         <!-- Search Bar -->
+
+        <h1 class="section-title">SHOP</h1>
         <div class="search-bar">
           <input 
             type="text" 
             placeholder="Card Name"
             class="search-input"
           />
-          <button class="search-button">
+          <button class="search-button" @click="goToCards">
             <ion-icon :icon="searchOutline" class="search-icon"></ion-icon>
           </button>
         </div>
@@ -87,31 +89,39 @@
           </div>
         </div>
 
+
+        <!-- BEST SELLERS Title -->
+        <h2 class="section-subtitle">BEST SELLERS</h2>
+        <!-- Trending Carousel -->
         <swiper
-            :modules="[SwiperAutoplay, SwiperPagination, SwiperNavigation]"
-            :slides-per-view="3"
-            :space-between="40"
-            :pagination="{ clickable: true }"
-            :navigation="false"
-            :autoplay="{ delay: 3000, disableOnInteraction: false }"
-            :breakpoints="{
-              '640': {
-                slidesPerView: 2,
-                spaceBetween: 15,
-              },
-              '768': {
-                slidesPerView: 3,
-                spaceBetween: 20,
-              },
-            }"
-            class="trending-carousel"
-          >
-            <swiper-slide v-for="(card, index) in trendingCards" :key="index">
-              <ion-card class="card-item-car">
-                <ion-img :src="card.image" :alt="card.name" class="card-image-car"></ion-img>
-              </ion-card>
-            </swiper-slide>
-          </swiper>
+          :modules="[SwiperAutoplay, SwiperPagination, SwiperNavigation]"
+          :slides-per-view="3"
+          :space-between="40"
+          :pagination="{ clickable: true }"
+          :navigation="false"
+          :autoplay="{ delay: 3000, disableOnInteraction: false }"
+          :breakpoints="{
+            '640': {
+              slidesPerView: 2,
+              spaceBetween: 15,
+            },
+            '768': {
+              slidesPerView: 3,
+              spaceBetween: 20,
+            },
+          }"
+          class="trending-carousel"
+        >
+          <swiper-slide v-for="(card, index) in trendingCards" :key="index">
+            <ion-card class="card-item-car">
+              <ion-img :src="card.image" :alt="card.name" class="card-image-car"></ion-img>
+            </ion-card>
+          </swiper-slide>
+        </swiper>
+
+
+        <!-- RECOMMENDATIONS Title -->
+        <h2 class="section-subtitle">RECOMMENDATIONS</h2>
 
         <!-- Cards List -->
         <div class="cards-list">
@@ -123,7 +133,7 @@
               </div>
               <div class="card-right">
                 <span class="card-price">{{ card.price }}</span>
-                <button class="cart-button">
+                <button class="cart-button" @click="addToCart(card)">
                   <ion-icon :icon="cartOutline"></ion-icon>
                 </button>
               </div>
@@ -131,22 +141,31 @@
           </div>
         </div>
       </div>
+
+      <!-- Toast Notification -->
+      <ion-toast
+        :is-open="showToast"
+        message="Se ha añadido correctamente al carrito"
+        :duration="2000"
+        @didDismiss="showToast = false"
+        class="custom-toast"
+      ></ion-toast>
     </ion-content>
   </ion-page>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-import { IonPage, IonContent, IonIcon, IonHeader } from '@ionic/vue';
+import { IonPage, IonContent, IonIcon, IonToast } from '@ionic/vue';
 import { searchOutline, cartOutline, cameraOutline, chevronDownOutline } from 'ionicons/icons';
 import HeaderLogo from '@/components/HeaderLogo.vue';
-
 
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import { useRouter } from 'vue-router';
 
 // Rename the modules to avoid conflicts
 const SwiperAutoplay = Autoplay;
@@ -164,16 +183,30 @@ const trendingCards = [
   { name: 'Card 3', image: 'https://cards.scryfall.io/normal/front/2/e/2e261489-8dde-4594-8868-69f432f03d03.jpg?1740336344' },
 ];
 
-
-
 const showFilters = ref(false);
+const showToast = ref(false);
 const cards = ref(Array(11).fill({
   name: 'Sol Ring',
   price: '1,99$'
 }));
+
+// Función para añadir al carrito y mostrar el toast
+const addToCart = (card) => {
+  console.log('Añadido al carrito:', card.name);
+  showToast.value = true; // Mostrar el toast
+};
+
+
+
+const router = useRouter();
+
+const goToCards = () => {
+  router.push({ path: '/tabs/tab4/shoping' }); // Usa router.push con la ruta correcta
+};
 </script>
 
 <style scoped>
+/* Estilos anteriores (sin cambios) */
 .search-container {
   padding: 3rem;
   background-color: #121212;
@@ -183,8 +216,7 @@ const cards = ref(Array(11).fill({
 .content-wrapper {
   padding: 2rem;
   max-width: 600px;
-  margin-top: 2rem;
-
+  margin-top: 0.5rem;
 }
 
 .search-bar {
@@ -404,19 +436,17 @@ select:focus {
   outline: none;
 }
 
-
-
 .trending-carousel {
   width: 100%;
-  height: 180px; /* Altura reducida */
-  padding: 10px 0; /* Padding reducido */
+  height: 180px;
+  padding: 10px 0;
 }
 
 .card-item-car {
   margin: 0;
   background: #2a2a2a;
-  height: 130px; /* Altura fija más pequeña */
-  width: 90px; /* Ancho fijo más pequeño */
+  height: 130px;
+  width: 90px;
 }
 
 .card-image-car {
@@ -429,17 +459,17 @@ select:focus {
 .trending-carousel :deep(.swiper-button-next),
 .trending-carousel :deep(.swiper-button-prev) {
   color: #E67E22;
-  transform: scale(0.7); /* Hace las flechas más pequeñas */
+  transform: scale(0.7);
 }
 
 .trending-carousel :deep(.swiper-button-next):after,
 .trending-carousel :deep(.swiper-button-prev):after {
-  font-size: 20px; /* Tamaño de flecha más pequeño */
+  font-size: 20px;
 }
 
 .trending-carousel :deep(.swiper-pagination-bullet) {
   background: #fff;
-  width: 6px; /* Bullets más pequeños */
+  width: 6px;
   height: 6px;
 }
 
@@ -450,5 +480,45 @@ select:focus {
 
 .trending-carousel :deep(.swiper-button-prev) {
   left: 5px;
+}
+
+/* Estilos personalizados para el toast */
+.custom-toast {
+  --background: #4CAF50; /* Fondo verde */
+  --color: white; /* Texto blanco */
+  --border-radius: 12px; /* Bordes redondeados */
+  --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra suave */
+  --padding: 16px; /* Espaciado interno */
+  --font-size: 14px; /* Tamaño de fuente */
+  --font-weight: 500; /* Grosor de fuente */
+  --icon-color: white; /* Color del ícono (si se usa) */
+  --width: auto; /* Ancho automático */
+  --max-width: 90%; /* Ancho máximo */
+  --min-width: 250px; /* Ancho mínimo */
+  --height: auto; /* Altura automática */
+  --animation-duration: 300ms; /* Duración de la animación */
+  --animation-timing-function: ease-in-out; /* Función de temporización */
+}
+
+.custom-toast::part(message) {
+  text-align: center; /* Centrar el texto */
+}
+
+.custom-toast::part(button) {
+  color: white; /* Color del botón (si se usa) */
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 1.5rem;
+}
+
+.section-subtitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  margin: 2rem 0 1rem;
 }
 </style>

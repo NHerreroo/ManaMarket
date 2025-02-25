@@ -15,14 +15,8 @@
           </button>
         </div>
 
-        <!-- Filter Toggle Button -->
-        <button class="filter-toggle" @click="showFilters = !showFilters">
-          <span>Filters</span>
-          <ion-icon :icon="chevronDownOutline" :class="{'rotate': showFilters}"></ion-icon>
-        </button>
-
         <!-- Filters Section -->
-        <div class="filters-section" :class="{'expanded': showFilters}">
+        <div class="filters-section">
           <div class="filters-grid">
             <!-- Primera fila -->
             <div class="filters-row">
@@ -86,6 +80,7 @@
             </div>
           </div>
         </div>
+        <CardShowcase></CardShowcase> 
       </div>
     </ion-content>
   </ion-page>
@@ -97,9 +92,10 @@ import { useRouter } from 'vue-router'; // Importa useRouter
 import { IonPage, IonContent, IonIcon } from '@ionic/vue';
 import { searchOutline, chevronDownOutline } from 'ionicons/icons';
 import HeaderLogo from '@/components/HeaderLogo.vue';
+import CardShowcase from '@/components/CardShowcase.vue';
 
-const showFilters = ref(false); // Estado para controlar si los filtros están visibles
 const router = useRouter(); // Instancia de router
+
 
 const goToCard = () => {
   router.push({ path: '/tabs/tab2/card' }); // Usa router.push con la ruta correcta
@@ -160,37 +156,7 @@ const goToCard = () => {
   font-size: 1.5rem;
 }
 
-.filter-toggle {
-  width: 100%;
-  background-color: #E67E22;
-  border: none;
-  border-radius: 0.5rem;
-  color: white;
-  padding: 0.75rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-  cursor: pointer;
-}
-
-.filter-toggle ion-icon {
-  transition: transform 0.3s ease;
-}
-
-.filter-toggle ion-icon.rotate {
-  transform: rotate(180deg);
-}
-
 .filters-section {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease-out;
-}
-
-.filters-section.expanded {
-  max-height: 500px; /* Ajusta este valor según la altura de tus filtros */
   margin-bottom: 1rem;
 }
 
@@ -251,7 +217,6 @@ input::placeholder {
   color: #666;
 }
 
-
 /* Focus states */
 .search-input:focus,
 .filter-select:focus,
@@ -265,8 +230,6 @@ input:focus,
 select:focus {
   outline: none;
 }
-
-
 
 .logo {
   display: flex;

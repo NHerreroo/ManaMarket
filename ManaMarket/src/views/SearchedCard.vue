@@ -216,24 +216,6 @@
   
   <style scoped>
   
-  
-  .back-button {
-  font-size: 28px;
-  background-color: #d87219;
-  border: none;
-  border-radius: 9999px;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  cursor: pointer;
-  position: sticky;
-  top: 6rem; /* Ajusta este valor para moverlo más abajo */
-  z-index: 10;
-  margin-left: 8rem;
-}
 
   
   .back-button:hover {
@@ -248,6 +230,7 @@
   }
   
   .back-button {
+  font-size: 28px;
   background-color: #d87219;
   border: none;
   border-radius: 9999px;
@@ -279,7 +262,7 @@
   
   .card-image {
     width: 100%;
-    border-radius: 16px;
+    border-radius: 2rem;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s ease;
   }
