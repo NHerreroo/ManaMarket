@@ -1,15 +1,7 @@
 <template>
   <ion-page>
     <div class="verification-container">
-      <!-- Logo -->
-      <div class="logo">
-        <div class="logo-icon">
-          <div class="logo-square white"></div>
-          <div class="logo-square orange"></div>
-        </div>
-        <span class="logo-text">MANA MARKET</span>
-      </div>
-
+      <Logo></Logo>
       <!-- Verification Form -->
       <div class="verification-form">
         <h1 class="title">Confirm</h1>
@@ -47,6 +39,7 @@
 import { ref, computed } from 'vue'
 import { IonPage } from '@ionic/vue'
 import { useRouter } from 'vue-router' // Importa el enrutador
+import Logo from '@/components/Logo.vue'
 
 const router = useRouter() // Obtén la instancia del enrutador
 
@@ -108,40 +101,7 @@ const handleSubmit = () => {
   padding: 1rem;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 2rem;
-}
 
-.logo-icon {
-  position: relative;
-  width: 24px;
-  height: 32px;
-}
-
-.logo-square {
-  position: absolute;
-  width: 24px;
-  height: 32px;
-}
-
-.logo-square.white {
-  background-color: white;
-  transform: rotate(-12deg);
-}
-
-.logo-square.orange {
-  background-color: #E67E22;
-  transform: rotate(12deg);
-}
-
-.logo-text {
-  color: white;
-  font-size: 1.25rem;
-  font-weight: bold;
-}
 
 .verification-form {
   width: 100%;

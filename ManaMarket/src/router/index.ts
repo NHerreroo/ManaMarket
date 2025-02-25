@@ -36,24 +36,12 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/Tab1Page.vue'),
       },
       {
-        path: 'tab1/secundaria',
-        component: () => import('@/views/Tab1Secundaria.vue'),
-      },
-      {
         path: 'tab2',
         component: () => import('@/views/Tab2Page.vue'),
       },
       {
-        path: 'tab2/secundaria',
-        component: () => import('@/views/Tab2Secundaria.vue'),
-      },
-      {
         path: 'tab3',
         component: () => import('@/views/Tab3Page.vue'),
-      },
-      {
-        path: 'tab3/secundaria',
-        component: () => import('@/views/Tab3Secundaria.vue'),
       },
       {
         path: 'tab4',

@@ -1,16 +1,7 @@
 <template>
   <ion-page>
     <div class="login-container">
-      <!-- Logo -->
-      <div class="logo">
-        <div class="logo-icon">
-          <div class="logo-square white"></div>
-          <div class="logo-square orange"></div>
-        </div>
-        <span class="logo-text">MANA MARKET</span>
-      </div>
-
-      <!-- Login Form -->
+      <Logo/>
       <div class="login-form">
         <h1 class="title">Login</h1>
 
@@ -44,7 +35,7 @@
           </div>
 
           <!-- Login Button -->
-          <button type="submit" class="login-btn">
+          <button type="submit" class="login-btn" @click="goToApp">
             Login
           </button>
         </form>
@@ -64,6 +55,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton } from '@ionic/vue'
+import Logo from '@/components/Logo.vue';
 
 const router = useRouter();
 
@@ -71,6 +63,9 @@ const goToRegister = () => {
   router.push({ name: 'Register' });
 };
 
+const goToApp = () => {
+  router.push({ name: 'tabs' });
+}
 </script>
 
 <style scoped>
@@ -84,40 +79,6 @@ const goToRegister = () => {
   padding: 1rem;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 2rem;
-}
-
-.logo-icon {
-  position: relative;
-  width: 24px;
-  height: 32px;
-}
-
-.logo-square {
-  position: absolute;
-  width: 24px;
-  height: 32px;
-}
-
-.logo-square.white {
-  background-color: white;
-  transform: rotate(-12deg);
-}
-
-.logo-square.orange {
-  background-color: #E67E22;
-  transform: rotate(12deg);
-}
-
-.logo-text {
-  color: white;
-  font-size: 1.25rem;
-  font-weight: bold;
-}
 
 .login-form {
   width: 100%;

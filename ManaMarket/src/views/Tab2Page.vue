@@ -1,6 +1,7 @@
 <template>
   <ion-page>
     <ion-content class="search-container">
+      <HeaderLogo></HeaderLogo>
       <div class="content-wrapper">
         <!-- Search Bar -->
         <div class="search-bar">
@@ -92,8 +93,9 @@
 
 <script setup>
 import { ref } from 'vue';
-import { IonPage, IonContent, IonIcon } from '@ionic/vue';
+import { IonPage, IonContent, IonIcon, IonHeader } from '@ionic/vue';
 import { searchOutline, cartOutline, cameraOutline, chevronDownOutline } from 'ionicons/icons';
+import HeaderLogo from '@/components/HeaderLogo.vue';
 
 const showFilters = ref(false); // Estado para controlar si los filtros están visibles
 </script>
@@ -107,7 +109,7 @@ const showFilters = ref(false); // Estado para controlar si los filtros están v
 .content-wrapper {
   padding: 1.5rem;
   max-width: 600px;
-  margin: 0 auto;
+  margin-top: 2rem;
 }
 
 .search-bar {
@@ -273,5 +275,45 @@ select:focus {
     padding: 0.75rem 0.5rem;
     font-size: 0.8rem;
   }
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.logo-icon {
+  position: relative;
+  width: 24px;
+  height: 32px;
+}
+
+.logo-square {
+  position: absolute;
+  width: 24px;
+  height: 32px;
+}
+
+.logo-square.white {
+  background-color: white;
+  transform: rotate(-12deg);
+}
+
+.logo-square.orange {
+  background-color: #E67E22;
+  transform: rotate(12deg);
+}
+
+.logo-text {
+  color: white;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 24rem;
 }
 </style>

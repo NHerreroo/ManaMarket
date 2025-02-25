@@ -1,5 +1,6 @@
 <template>
   <ion-page>
+    <HeaderLogo></HeaderLogo>
     <ion-content :fullscreen="true" class="ion-padding custom-content">
       <div class="collection-container">
         <!-- Stats Circle -->
@@ -46,6 +47,7 @@
 </template>
 
 <script setup>
+import HeaderLogo from '@/components/HeaderLogo.vue';
 import { IonPage, IonContent, IonFab, IonFabButton, IonIcon } from '@ionic/vue';
 import { add } from 'ionicons/icons';
 
