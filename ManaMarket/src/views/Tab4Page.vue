@@ -90,7 +90,7 @@
         <swiper
             :modules="[SwiperAutoplay, SwiperPagination, SwiperNavigation]"
             :slides-per-view="3"
-            :space-between="20"
+            :space-between="50"
             :pagination="{ clickable: true }"
             :navigation="false"
             :autoplay="{ delay: 3000, disableOnInteraction: false }"
@@ -426,14 +426,14 @@ select:focus {
   padding: 10px 0; /* Padding reducido */
 }
 
-.card-item {
+.card-item-car {
   margin: 0;
   background: #2a2a2a;
   height: 130px; /* Altura fija más pequeña */
   width: 90px; /* Ancho fijo más pequeño */
 }
 
-.card-image {
+.card-image-car {
   height: 100%;
   width: 100%;
   object-fit: cover;
