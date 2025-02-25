@@ -18,18 +18,16 @@
         <!-- Cards Grid -->
         <div class="cards-grid">
           <div v-for="deck in decks" :key="deck.name" class="deck-card">
-            <div class="deck-content">
-              <h3>{{ deck.name }}</h3>
-              <div class="card-previews">
-                <img :src="deck.card1" alt="Card preview" class="card-preview"/>
-                <img :src="deck.card2" alt="Card preview" class="card-preview"/>
-              </div>
-              <div class="mana-icons">
-                <div v-for="(icon, index) in deck.manaIcons" 
+            <div class="deck-content" :style="{ backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url(${deck.background || deck.card1})` }">
+              <div class="mana-dots">
+                <div v-for="(color, index) in deck.mana" 
                      :key="index" 
-                     class="mana-icon">
-                  ⚪
+                     class="mana-dot"
+                     :class="getManaClass(color)">
                 </div>
+              </div>
+              <div class="deck-overlay">
+                <h3>{{ deck.name }}</h3>
               </div>
             </div>
           </div>
@@ -51,85 +49,66 @@ import HeaderLogo from '@/components/HeaderLogo.vue';
 import { IonPage, IonContent, IonFab, IonFabButton, IonIcon } from '@ionic/vue';
 import { add } from 'ionicons/icons';
 
+const getManaClass = (color) => {
+  const classes = {
+    'B': 'black',
+    'G': 'green',
+    'R': 'red',
+    'W': 'white',
+    'Z': 'blue',
+    'I': 'colorless'
+  };
+  return classes[color] || 'colorless';
+};
+
 const decks = [
   {
     name: 'Disa The Restless',
-    card1: '/placeholder.svg?height=100&width=70',
-    card2: '/placeholder.svg?height=100&width=70',
-    manaIcons: [1, 2, 3]
+    background: 'https://cards.scryfall.io/art_crop/front/c/9/c976edeb-0fa1-4647-a16c-870d8a3c30c6.jpg?1727175653',
+    mana: ['G', 'R', 'B']
   },
   {
-    name: 'Bello Bard',
-    card1: '/placeholder.svg?height=100&width=70',
-    card2: '/placeholder.svg?height=100&width=70',
-    manaIcons: [1, 2]
+    name: 'Bello Bard of the brambles',
+    background: 'https://cards.scryfall.io/art_crop/front/3/1/31e4b7a1-b377-49d2-a92e-4bcb0db35f16.jpg?1721428130',
+    mana: ['G', 'R']
+  },  {
+    name: 'Marihuanera',
+    background: 'https://cards.scryfall.io/art_crop/front/4/2/42bbedc1-6b83-46b4-8b3b-a4e05ce77d87.jpg?1721428140',
+    mana: ['G','W','Z']
   },
   {
-    name: 'Yqra & Squirrels',
-    card1: '/placeholder.svg?height=100&width=70',
-    card2: '/placeholder.svg?height=100&width=70',
-    manaIcons: [1, 2]
+    name: 'Atraxa',
+    background: 'https://cards.scryfall.io/art_crop/front/d/0/d0d33d52-3d28-4635-b985-51e126289259.jpg?1599707796',
+    mana: ['G', 'W','Z','B']
   },
   {
-    name: 'Simic Frogs 4 L win',
-    card1: '/placeholder.svg?height=100&width=70',
-    card2: '/placeholder.svg?height=100&width=70',
-    manaIcons: [1, 2]
+    name: 'Krenko',
+    background: 'https://cards.scryfall.io/art_crop/front/8/2/824b2d73-2151-4e5e-9f05-8f63e2bdcaa9.jpg?1730632010',
+    mana: ['R']
   },
   {
-    name: 'Finn Counter Comb',
-    card1: '/placeholder.svg?height=100&width=70',
-    card2: '/placeholder.svg?height=100&width=70',
-    manaIcons: [1, 2]
+    name: 'will',
+    background: 'https://cards.scryfall.io/art_crop/front/1/6/162088ea-5f99-4244-9427-2fdfb2168fc3.jpg?1692939510',
+    mana: ['W', 'Z']
   },
   {
-    name: 'Will Gitano',
-    card1: '/placeholder.svg?height=100&width=70',
-    card2: '/placeholder.svg?height=100&width=70',
-    manaIcons: [1, 2]
-  },{
-    name: 'Disa The Restless',
-    card1: '/placeholder.svg?height=100&width=70',
-    card2: '/placeholder.svg?height=100&width=70',
-    manaIcons: [1, 2, 3]
+    name: 'Gat i Gos',
+    background: 'https://cards.scryfall.io/art_crop/front/d/6/d605c780-a42a-4816-8fb9-63e3114a8246.jpg?1677724018',
+    mana: ['G', 'R', 'W']
   },
   {
-    name: 'Bello Bard',
-    card1: '/placeholder.svg?height=100&width=70',
-    card2: '/placeholder.svg?height=100&width=70',
-    manaIcons: [1, 2]
+    name: 'sauron',
+    background: 'https://cards.scryfall.io/art_crop/front/0/3/034e0929-b2c7-4b5f-94f2-8eaf4fb1a2a1.jpg?1693611218',
+    mana: ['Z','B', 'R']
   },
-  {
-    name: 'Yqra & Squirrels',
-    card1: '/placeholder.svg?height=100&width=70',
-    card2: '/placeholder.svg?height=100&width=70',
-    manaIcons: [1, 2]
-  },
-  {
-    name: 'Simic Frogs 4 L win',
-    card1: '/placeholder.svg?height=100&width=70',
-    card2: '/placeholder.svg?height=100&width=70',
-    manaIcons: [1, 2]
-  },
-  {
-    name: 'Finn Counter Comb',
-    card1: '/placeholder.svg?height=100&width=70',
-    card2: '/placeholder.svg?height=100&width=70',
-    manaIcons: [1, 2]
-  },
-  {
-    name: 'Will Gitano',
-    card1: '/placeholder.svg?height=100&width=70',
-    card2: '/placeholder.svg?height=100&width=70',
-    manaIcons: [1, 2]
-  }
+  // ... rest of the decks data
 ];
 </script>
 
 <style scoped>
 /* Remove default Ionic background */
 .custom-content::part(background) {
-  background: black;
+  background: rgb(0, 0, 0);
 }
 
 .custom-content::part(scroll) {
@@ -137,7 +116,7 @@ const decks = [
 }
 
 .collection-container {
-  background-color: black;
+  background-color: rgb(0, 0, 0);
   padding: 1rem;
   min-height: 100%;
 }
@@ -189,54 +168,106 @@ const decks = [
 
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
   padding-bottom: 80px;
 }
 
 .deck-card {
-  background-color: #1A1A1A;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  transition: transform 0.2s;
+  aspect-ratio: 1;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .deck-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.deck-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.deck-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.911),
+    rgba(0,0,0,0.9) 30%,
+    rgba(0,0,0,0.7) 60%,
+    rgba(0,0,0,0.4) 80%,
+    rgba(0, 0, 0, 0) 100%
+  );
 }
 
 .deck-content h3 {
   color: white;
-  font-size: 0.9em;
-  margin: 0 0 10px 0;
-  font-weight: 500;
+  font-size: 1.1em;
+  margin: 0;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
-.card-previews {
+.mana-dots {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
   display: flex;
-  gap: 8px;
-  margin-bottom: 8px;
+  gap: 0.5rem;
 }
 
-.card-preview {
-  width: 45%;
-  height: auto;
-  border-radius: 0.5rem;
+.mana-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
 }
 
-.mana-icons {
-  display: flex;
-  gap: 4px;
+.mana-dot.black {
+  background: #970884;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+  border: 1px solid #8f097d;
 }
 
-.mana-icon {
-  width: 16px;
-  height: 16px;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #666;
+.mana-dot.green {
+  background: #26df16;
+  box-shadow: 0 0 8px rgba(42, 145, 52, 0.8);
+  border: 1px solid #3dd947;
+}
+
+.mana-dot.red {
+  background: #d83838;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+  border: 1px solid #ff4444;
+}
+
+.mana-dot.white {
+  background: #c6e638;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+  border: 1px solid #ffffff;
+}
+
+.mana-dot.blue {
+  background: #2184e7;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+  border: 1px solid #3399ff;
+}
+
+.mana-dot.colorless {
+  background: #808080;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+  border: 1px solid #a6a6a6;
 }
 
 /* Customize Ionic FAB button */
@@ -251,15 +282,6 @@ ion-fab-button::part(native):hover {
   background-color: #D35400;
 }
 
-/* Remove default focus outline for better custom styling */
-button:focus {
-  outline: none;
-}
-
-button:focus-visible {
-  box-shadow: 0 0 0 2px #E67E22;
-}
-
 /* Ensure Ionic content is scrollable */
 :host {
   display: flex;
@@ -270,5 +292,20 @@ button:focus-visible {
 ion-content::part(scroll) {
   display: flex;
   flex-direction: column;
+}
+
+@media (max-width: 640px) {
+  .cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+  
+  .deck-overlay {
+    padding: 1rem;
+  }
+  
+  .deck-content h3 {
+    font-size: 1em;
+  }
 }
 </style>

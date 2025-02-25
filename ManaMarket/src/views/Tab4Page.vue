@@ -113,8 +113,6 @@
             </swiper-slide>
           </swiper>
 
-
-          
         <!-- Cards List -->
         <div class="cards-list">
           <div class="card-item" v-for="(card, index) in cards" :key="index">
@@ -428,14 +426,14 @@ select:focus {
   padding: 10px 0; /* Padding reducido */
 }
 
-.card-item-car {
+.card-item {
   margin: 0;
   background: #2a2a2a;
   height: 130px; /* Altura fija más pequeña */
   width: 90px; /* Ancho fijo más pequeño */
 }
 
-.card-image-car {
+.card-image {
   height: 100%;
   width: 100%;
   object-fit: cover;
