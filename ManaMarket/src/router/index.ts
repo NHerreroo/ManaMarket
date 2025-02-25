@@ -40,8 +40,16 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/Tab2Page.vue'),
       },
       {
+        path: 'tab2/card',
+        component: () => import('@/views/SearchedCard.vue'),
+      },
+      {
         path: 'tab3',
         component: () => import('@/views/Tab3Page.vue'),
+      },
+      {
+        path: 'tab3/collection',
+        component: () => import('@/views/Collection.vue'),
       },
       {
         path: 'tab4',

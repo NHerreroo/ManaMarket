@@ -11,7 +11,7 @@
         </div>
 
         <!-- All Cards Button -->
-        <button class="all-cards-btn">
+        <button class="all-cards-btn" @click="goToCard">
           All Cards
         </button>
 
@@ -48,6 +48,13 @@
 import HeaderLogo from '@/components/HeaderLogo.vue';
 import { IonPage, IonContent, IonFab, IonFabButton, IonIcon } from '@ionic/vue';
 import { add } from 'ionicons/icons';
+import { useRouter } from 'vue-router'; // Importa useRouter
+
+const router = useRouter(); // Instancia de router
+
+const goToCard = () => {
+  router.push({ path: '/tabs/tab3/collection' }); // Usa router.push con la ruta correcta
+};
 
 const getManaClass = (color) => {
   const classes = {
@@ -106,17 +113,10 @@ const decks = [
 </script>
 
 <style scoped>
-/* Remove default Ionic background */
-.custom-content::part(background) {
-  background: rgb(0, 0, 0);
-}
 
-.custom-content::part(scroll) {
-  background: black;
-}
 
 .collection-container {
-  background-color: rgb(0, 0, 0);
+  background-color: #121212;
   padding: 1rem;
   min-height: 100%;
 }
@@ -203,10 +203,8 @@ const decks = [
   padding: 1.5rem;
   background: linear-gradient(
     to top,
-    rgba(0, 0, 0, 0.911),
-    rgba(0,0,0,0.9) 30%,
+    rgb(0, 0, 0)10%,
     rgba(0,0,0,0.7) 60%,
-    rgba(0,0,0,0.4) 80%,
     rgba(0, 0, 0, 0) 100%
   );
 }

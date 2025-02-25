@@ -10,7 +10,7 @@
             placeholder="Card Name"
             class="search-input"
           />
-          <button class="search-button">
+          <button class="search-button" @click="goToCard">
             <ion-icon :icon="searchOutline" class="search-icon"></ion-icon>
           </button>
         </div>
@@ -93,16 +93,22 @@
 
 <script setup>
 import { ref } from 'vue';
-import { IonPage, IonContent, IonIcon, IonHeader } from '@ionic/vue';
-import { searchOutline, cartOutline, cameraOutline, chevronDownOutline } from 'ionicons/icons';
+import { useRouter } from 'vue-router'; // Importa useRouter
+import { IonPage, IonContent, IonIcon } from '@ionic/vue';
+import { searchOutline, chevronDownOutline } from 'ionicons/icons';
 import HeaderLogo from '@/components/HeaderLogo.vue';
 
 const showFilters = ref(false); // Estado para controlar si los filtros están visibles
+const router = useRouter(); // Instancia de router
+
+const goToCard = () => {
+  router.push({ path: '/tabs/tab2/card' }); // Usa router.push con la ruta correcta
+};
 </script>
 
 <style scoped>
 .search-container {
-  --background: #000000;
+  background-color: #121212;
   min-height: 100vh;
 }
 
@@ -260,22 +266,7 @@ select:focus {
   outline: none;
 }
 
-/* Responsive adjustments */
-@media (max-width: 480px) {
-  .content-wrapper {
-    padding: 1rem;
-  }
 
-  .filters-row {
-    gap: 0.75rem;
-  }
-
-  .filter-select,
-  .filter-input {
-    padding: 0.75rem 0.5rem;
-    font-size: 0.8rem;
-  }
-}
 
 .logo {
   display: flex;

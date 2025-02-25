@@ -100,7 +100,7 @@ const registerWithGoogle = () => {
 <style scoped>
 .login-container {
   min-height: 100vh;
-  background-color: black;
+  background-color: #121212;
   display: flex;
   flex-direction: column;
   align-items: center;

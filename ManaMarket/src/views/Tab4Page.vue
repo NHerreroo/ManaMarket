@@ -90,7 +90,7 @@
         <swiper
             :modules="[SwiperAutoplay, SwiperPagination, SwiperNavigation]"
             :slides-per-view="3"
-            :space-between="50"
+            :space-between="40"
             :pagination="{ clickable: true }"
             :navigation="false"
             :autoplay="{ delay: 3000, disableOnInteraction: false }"
@@ -175,14 +175,16 @@ const cards = ref(Array(11).fill({
 
 <style scoped>
 .search-container {
-  --background: #000000;
+  padding: 3rem;
+  background-color: #121212;
   min-height: 100vh;
 }
 
 .content-wrapper {
-  padding: 1.5rem;
+  padding: 2rem;
   max-width: 600px;
   margin-top: 2rem;
+
 }
 
 .search-bar {
@@ -402,22 +404,6 @@ select:focus {
   outline: none;
 }
 
-/* Responsive adjustments */
-@media (max-width: 480px) {
-  .content-wrapper {
-    padding: 1rem;
-  }
-
-  .filters-row {
-    gap: 0.75rem;
-  }
-
-  .filter-select,
-  .filter-input {
-    padding: 0.75rem 0.5rem;
-    font-size: 0.8rem;
-  }
-}
 
 
 .trending-carousel {

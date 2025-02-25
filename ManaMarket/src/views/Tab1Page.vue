@@ -152,7 +152,7 @@ const newsItems = [
 
 <style scoped>
 .news-container {
-  background-color: black;
+  background-color: #121212;
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
