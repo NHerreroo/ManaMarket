@@ -8,19 +8,19 @@
 
       <div class="cards-display">
         <div class="card card-side-left">
-          <img :src="'https://cards.scryfall.io/normal/front/3/1/31e4b7a1-b377-49d2-a92e-4bcb0db35f16.jpg'"
+          <img :src="'https://cards.scryfall.io/normal/front/1/8/18b77346-d6e4-4d2f-b054-19fdea686d40.jpg?1682689593'"
             alt="Magic Card" />
         </div>
         <div class="card card-side-left-2">
-          <img :src="'https://cards.scryfall.io/normal/front/3/1/31e4b7a1-b377-49d2-a92e-4bcb0db35f16.jpg'"
+          <img :src="'https://cards.scryfall.io/normal/front/2/5/25a6e1bb-c751-447c-be69-e03692568678.jpg?1736468800'"
             alt="Magic Card" />
         </div>
         <div class="card card-center">
-          <img :src="'https://cards.scryfall.io/normal/front/3/1/31e4b7a1-b377-49d2-a92e-4bcb0db35f16.jpg'"
+          <img :src="'https://cards.scryfall.io/normal/front/e/7/e789df76-d658-47a4-9efb-74da6bd8821c.jpg?1738357435'"
             alt="Magic Card" />
         </div>
         <div class="card card-side-right-2">
-          <img :src="'https://cards.scryfall.io/normal/front/3/1/31e4b7a1-b377-49d2-a92e-4bcb0db35f16.jpg'"
+          <img :src="'https://cards.scryfall.io/normal/front/7/7/771d4911-3dc8-4dc7-b2c9-e2158ee394bf.jpg?1717014234'"
             alt="Magic Card" />
         </div>
         <div class="card card-side-right">
@@ -45,7 +45,6 @@ import HeaderLogo from '@/components/HeaderLogo.vue';
 import CardShowcase from '@/components/CardShowcase.vue';
 
 const router = useRouter(); // Instancia de router
-
 const goToApp = () => {
   router.push({ path: '/tabs/tab4' });
 }

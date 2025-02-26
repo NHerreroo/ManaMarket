@@ -1,17 +1,13 @@
 <template>
   <ion-page>
     <ion-content class="search-container">
-      <HeaderLogo/>
+      <HeaderLogo />
       <div class="content-wrapper">
         <!-- Search Bar -->
 
         <h1 class="section-title">SHOP</h1>
         <div class="search-bar">
-          <input 
-            type="text" 
-            placeholder="Card Name"
-            class="search-input"
-          />
+          <input type="text" placeholder="Card Name" class="search-input" />
           <button class="search-button" @click="goToCards">
             <ion-icon :icon="searchOutline" class="search-icon"></ion-icon>
           </button>
@@ -20,11 +16,11 @@
         <!-- Filter Toggle Button -->
         <button class="filter-toggle" @click="showFilters = !showFilters">
           <span>Filters</span>
-          <ion-icon :icon="chevronDownOutline" :class="{'rotate': showFilters}"></ion-icon>
+          <ion-icon :icon="chevronDownOutline" :class="{ 'rotate': showFilters }"></ion-icon>
         </button>
 
         <!-- Filters Section -->
-        <div class="filters-section" :class="{'expanded': showFilters}">
+        <div class="filters-section" :class="{ 'expanded': showFilters }">
           <div class="filters-grid">
             <!-- Primera fila -->
             <div class="filters-row">
@@ -93,13 +89,8 @@
         <!-- BEST SELLERS Title -->
         <h2 class="section-subtitle">BEST SELLERS</h2>
         <!-- Trending Carousel -->
-        <swiper
-          :modules="[SwiperAutoplay, SwiperPagination, SwiperNavigation]"
-          :slides-per-view="3"
-          :space-between="40"
-          :pagination="{ clickable: true }"
-          :navigation="false"
-          :autoplay="{ delay: 3000, disableOnInteraction: false }"
+        <swiper :modules="[SwiperAutoplay, SwiperPagination, SwiperNavigation]" :slides-per-view="3" :space-between="40"
+          :pagination="{ clickable: true }" :navigation="false" :autoplay="{ delay: 3000, disableOnInteraction: false }"
           :breakpoints="{
             '640': {
               slidesPerView: 2,
@@ -109,9 +100,7 @@
               slidesPerView: 3,
               spaceBetween: 20,
             },
-          }"
-          class="trending-carousel"
-        >
+          }" class="trending-carousel">
           <swiper-slide v-for="(card, index) in trendingCards" :key="index">
             <ion-card class="card-item-car">
               <ion-img :src="card.image" :alt="card.name" class="card-image-car"></ion-img>
@@ -128,7 +117,11 @@
           <div class="card-item" v-for="(card, index) in cards" :key="index">
             <div class="card-content">
               <div class="card-left">
-                <ion-icon :icon="cameraOutline" class="camera-icon"></ion-icon>
+                <ion-icon 
+                  :icon="cameraOutline" 
+                  class="camera-icon"
+                  @click="showCardPreview"
+                ></ion-icon>
                 <span class="card-name">{{ card.name }}</span>
               </div>
               <div class="card-right">
@@ -140,16 +133,24 @@
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Toast Notification -->
-      <ion-toast
-        :is-open="showToast"
-        message="Se ha añadido correctamente al carrito"
-        :duration="2000"
-        @didDismiss="showToast = false"
-        class="custom-toast"
-      ></ion-toast>
+        <Transition name="fade">
+          <div v-if="isPreviewVisible" class="card-preview-overlay" @click="hideCardPreview">
+            <div class="card-preview-container" @click.stop>
+              <img 
+                :src="previewImageUrl" 
+                alt="Card preview" 
+                class="preview-image"
+                @click="hideCardPreview"
+              />
+            </div>
+          </div>
+        </Transition>
+
+        <!-- Toast Notification -->
+        <ion-toast :is-open="showToast" message="Se ha añadido correctamente al carrito" :duration="2000"
+          @didDismiss="showToast = false" class="custom-toast"></ion-toast>
+      </div>
     </ion-content>
   </ion-page>
 </template>
@@ -172,14 +173,31 @@ const SwiperAutoplay = Autoplay;
 const SwiperPagination = Pagination;
 const SwiperNavigation = Navigation;
 
+
+const isPreviewVisible = ref(false);
+const previewImageUrl = ref('https://cards.scryfall.io/normal/front/1/9/19911e6e-7c35-4281-b31c-266382f052cc.jpg?1717190810');
+
+const showCardPreview = () => {
+  isPreviewVisible.value = true;
+  // Prevenir scroll cuando el modal está abierto
+  document.body.style.overflow = 'hidden';
+};
+
+const hideCardPreview = () => {
+  isPreviewVisible.value = false;
+  // Restaurar scroll
+  document.body.style.overflow = 'auto';
+};
+
+
 const trendingCards = [
-  { name: 'Card 1', image: 'https://cards.scryfall.io/large/front/3/1/31e4b7a1-b377-49d2-a92e-4bcb0db35f16.jpg?1721428130' },
-  { name: 'Card 1', image: 'https://cards.scryfall.io/large/front/b/d/bd8fa327-dd41-4737-8f19-2cf5eb1f7cdd.jpg?1614638838' },
-  { name: 'Card 1', image: 'https://cards.scryfall.io/normal/front/0/2/02cbd397-3ef3-465f-84fe-765dd1444af8.jpg?1698988417' },
-  { name: 'Card 1', image: 'https://cards.scryfall.io/normal/front/5/9/59793f1c-8c7e-433e-9c09-40aa3ce931a1.jpg?1730489103' },
+  { name: 'Card 1', image: 'https://cards.scryfall.io/normal/front/b/b/bb246be3-d9cb-4753-8d8c-0c770a584090.jpg?1662752634' },
+  { name: 'Card 1', image: 'https://cards.scryfall.io/normal/front/7/e/7e44b856-1803-4e63-ad81-43a1c4ef5020.jpg?1730489782' },
+  { name: 'Card 1', image: 'https://cards.scryfall.io/normal/front/f/8/f8ead24c-dd4a-40cd-839e-de08017a7c29.jpg?1721425683' },
+  { name: 'Card 1', image: 'https://cards.scryfall.io/normal/front/b/6/b67c27f1-12d1-4c48-9e22-31c43a9ecbbc.jpg?1681082373' },
   { name: 'Card 1', image: 'https://cards.scryfall.io/normal/front/7/9/79ba5c35-6e5c-406a-b95f-844d5ec296ab.jpg?1692933638' },
-  { name: 'Card 1', image: 'https://cards.scryfall.io/normal/front/d/0/d0d33d52-3d28-4635-b985-51e126289259.jpg?1599707796' },
-  { name: 'Card 2', image: 'https://cards.scryfall.io/normal/front/9/3/93f786a2-a7b7-4f9e-92e8-9a6a11efe290.jpg?1627428096' },
+  { name: 'Card 1', image: 'https://cards.scryfall.io/normal/front/5/d/5da14d86-0780-4821-a799-96f64b377df4.jpg?1717011855' },
+  { name: 'Card 2', image: 'https://cards.scryfall.io/normal/front/a/b/ab061406-38f4-40e7-a9ea-e3cbcaabc127.jpg?1562631458' },
   { name: 'Card 3', image: 'https://cards.scryfall.io/normal/front/2/e/2e261489-8dde-4594-8868-69f432f03d03.jpg?1740336344' },
 ];
 
@@ -206,7 +224,53 @@ const goToCards = () => {
 </script>
 
 <style scoped>
-/* Estilos anteriores (sin cambios) */
+.camera-container {
+  position: relative;
+  cursor: pointer;
+}
+
+.card-preview {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #1A1A1A;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  margin-bottom: 0.5rem;
+}
+
+.preview-image {
+  width: 200px;
+  height: auto;
+  border-radius: 0.25rem;
+}
+
+/* Flecha del popup */
+.card-preview::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 8px;
+  border-style: solid;
+  border-color: #1A1A1A transparent transparent transparent;
+}
+
+/* Ajuste para asegurar que el icono de la cámara mantenga su estilo */
+.camera-icon {
+  color: #E67E22;
+  font-size: 1.5rem;
+  transition: color 0.2s ease;
+}
+
+.camera-container:hover .camera-icon {
+  color: #D35400;
+}
+
 .search-container {
   padding: 3rem;
   background-color: #121212;
@@ -485,28 +549,44 @@ select:focus {
 
 /* Estilos personalizados para el toast */
 .custom-toast {
-  --background: #4CAF50; /* Fondo verde */
-  --color: white; /* Texto blanco */
-  --border-radius: 12px; /* Bordes redondeados */
-  --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra suave */
-  --padding: 16px; /* Espaciado interno */
-  --font-size: 14px; /* Tamaño de fuente */
-  --font-weight: 500; /* Grosor de fuente */
-  --icon-color: white; /* Color del ícono (si se usa) */
-  --width: auto; /* Ancho automático */
-  --max-width: 90%; /* Ancho máximo */
-  --min-width: 250px; /* Ancho mínimo */
-  --height: auto; /* Altura automática */
-  --animation-duration: 300ms; /* Duración de la animación */
-  --animation-timing-function: ease-in-out; /* Función de temporización */
+  --background: #4CAF50;
+  /* Fondo verde */
+  --color: white;
+  /* Texto blanco */
+  --border-radius: 12px;
+  /* Bordes redondeados */
+  --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  /* Sombra suave */
+  --padding: 16px;
+  /* Espaciado interno */
+  --font-size: 14px;
+  /* Tamaño de fuente */
+  --font-weight: 500;
+  /* Grosor de fuente */
+  --icon-color: white;
+  /* Color del ícono (si se usa) */
+  --width: auto;
+  /* Ancho automático */
+  --max-width: 90%;
+  /* Ancho máximo */
+  --min-width: 250px;
+  /* Ancho mínimo */
+  --height: auto;
+  /* Altura automática */
+  --animation-duration: 300ms;
+  /* Duración de la animación */
+  --animation-timing-function: ease-in-out;
+  /* Función de temporización */
 }
 
 .custom-toast::part(message) {
-  text-align: center; /* Centrar el texto */
+  text-align: center;
+  /* Centrar el texto */
 }
 
 .custom-toast::part(button) {
-  color: white; /* Color del botón (si se usa) */
+  color: white;
+  /* Color del botón (si se usa) */
 }
 
 .section-title {
@@ -521,5 +601,74 @@ select:focus {
   font-weight: bold;
   color: white;
   margin: 2rem 0 1rem;
+}
+
+.card-preview-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.card-preview-container {
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.preview-image {
+  max-height: 90vh;
+  max-width: 90vw;
+  object-fit: contain;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* Animaciones */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* Mejoras para el icono de la cámara */
+.camera-icon {
+  color: #E67E22;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.camera-icon:hover {
+  color: #D35400;
+  transform: scale(1.1);
+}
+
+/* Asegurar que el contenido detrás del modal no se pueda interactuar */
+.card-preview-overlay {
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .preview-image {
+    max-width: 95vw;
+    max-height: 80vh;
+  }
 }
 </style>

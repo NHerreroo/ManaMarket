@@ -3,7 +3,7 @@
         <HeaderLogo />
         <!-- Header -->
         <div class="header">
-            <button class="back-button" @click="router.back()">
+            <button class="back-button" @click="goToShop">
                 <ion-icon :icon="arrowBackOutline"></ion-icon>
             </button>
         </div>
@@ -123,6 +123,10 @@ import { arrowBackOutline, pencilOutline } from 'ionicons/icons';
 
 
 const router = useRouter();
+
+const goToShop = () => {
+  router.push({ path: '/tabs/tab4/' }); // Usa router.push con la ruta correcta
+};
 
 const showToast = ref(false);
 const searchQuery = ref('Sol Ring');

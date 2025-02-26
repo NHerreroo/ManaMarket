@@ -16,7 +16,7 @@
         </div>
 
         <!-- Filters Section -->
-        <div class="filters-section">
+        <div class="filters-setion">
           <div class="filters-grid">
             <!-- Primera fila -->
             <div class="filters-row">
@@ -266,5 +266,11 @@ select:focus {
 .login-form {
   width: 100%;
   max-width: 24rem;
+}
+
+.filters-section{
+  max-height: 0;
+   overflow: hidden;
+  transition: max-height 0.3s ease-out;
 }
 </style>

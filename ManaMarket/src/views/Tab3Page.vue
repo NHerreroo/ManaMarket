@@ -87,7 +87,7 @@ const decks = [
     background: 'https://cards.scryfall.io/art_crop/front/3/1/31e4b7a1-b377-49d2-a92e-4bcb0db35f16.jpg?1721428130',
     mana: ['G', 'R']
   },  {
-    name: 'Marihuanera',
+    name: 'Ms Bumbleflower',
     background: 'https://cards.scryfall.io/art_crop/front/4/2/42bbedc1-6b83-46b4-8b3b-a4e05ce77d87.jpg?1721428140',
     mana: ['G','W','Z']
   },
@@ -97,12 +97,12 @@ const decks = [
     mana: ['G', 'W','Z','B']
   },
   {
-    name: 'Krenko',
+    name: 'Krenko Mob Boss',
     background: 'https://cards.scryfall.io/art_crop/front/8/2/824b2d73-2151-4e5e-9f05-8f63e2bdcaa9.jpg?1730632010',
     mana: ['R']
   },
   {
-    name: 'will',
+    name: 'Will EDH Deck',
     background: 'https://cards.scryfall.io/art_crop/front/1/6/162088ea-5f99-4244-9427-2fdfb2168fc3.jpg?1692939510',
     mana: ['W', 'Z']
   },
@@ -112,7 +112,7 @@ const decks = [
     mana: ['G', 'R', 'W']
   },
   {
-    name: 'sauron',
+    name: 'Sauron Lord',
     background: 'https://cards.scryfall.io/art_crop/front/0/3/034e0929-b2c7-4b5f-94f2-8eaf4fb1a2a1.jpg?1693611218',
     mana: ['Z','B', 'R']
   },
