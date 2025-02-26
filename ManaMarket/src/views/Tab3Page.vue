@@ -36,7 +36,7 @@
 
       <!-- Fixed FAB -->
       <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button color="warning">
+        <ion-fab-button color="warning" @click="newwdeck">
           <ion-icon :icon="add"></ion-icon>
         </ion-fab-button>
       </ion-fab>
@@ -60,6 +60,9 @@ const viewdeck = () => {
   router.push({ path: '/tabs/tab3/deck' }); // Usa router.push con la ruta correcta
 };
 
+const newwdeck = () => {
+  router.push({ path: '/tabs/tab3/newdeck' }); // Usa router.push con la ruta correcta
+};
 
 const getManaClass = (color) => {
   const classes = {

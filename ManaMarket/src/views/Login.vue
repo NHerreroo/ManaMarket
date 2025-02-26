@@ -6,7 +6,7 @@
         <h1 class="title">Login</h1>
 
         <!-- Google Login Button -->
-        <button class="google-btn" @click="loginWithGoogle">
+        <button class="google-btn" @click="goToApp">
           <img src="https://www.google.com/favicon.ico" alt="Google" />
           Continue with Google
         </button>
@@ -64,7 +64,7 @@ const goToRegister = () => {
 };
 
 const goToApp = () => {
-  router.push({ name: 'tabs' });
+  router.push({ path: '/tabs/tab1' });
 }
 </script>
 

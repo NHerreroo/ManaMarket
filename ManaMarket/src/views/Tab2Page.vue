@@ -103,15 +103,16 @@ const goToCard = () => {
 </script>
 
 <style scoped>
-.search-container {
-  background-color: #121212;
-  min-height: 100vh;
-}
-
 .content-wrapper {
   padding: 1.5rem;
+  padding-bottom: 4rem; /* Add extra padding at bottom */
   max-width: 600px;
-  margin-top: 2rem;
+  margin: 2rem auto 0; /* Center the content and add top margin */
+}
+
+.search-container {
+  background-color: #121212;
+  --padding-bottom: 2rem; /* Add padding to ion-content */
 }
 
 .search-bar {
@@ -154,10 +155,6 @@ const goToCard = () => {
 .search-icon {
   color: white;
   font-size: 1.5rem;
-}
-
-.filters-section {
-  margin-bottom: 1rem;
 }
 
 .filters-grid {

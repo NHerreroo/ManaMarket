@@ -56,6 +56,14 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/viewDeck.vue'),
       },
       {
+        path: 'tab3/deck/edit',
+        component: () => import('@/views/editDeck.vue'),
+      },
+      {
+        path: 'tab3/newdeck',
+        component: () => import('@/views/newDeck.vue'),
+      },
+      {
         path: 'tab4',
         component: () => import('@/views/Tab4Page.vue'),
       },

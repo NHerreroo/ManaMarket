@@ -51,7 +51,7 @@ const creatures = ref(Array(34).fill({
 }));
 
 const editDeck = () => {
-  console.log("Edit deck clicked");
+  router.push({ path: '/tabs/tab3/deck/edit' });
 };
 </script>
 

@@ -55,7 +55,7 @@
         <div class="divider">Or</div>
 
         <!-- Google Button -->
-        <button class="google-btn" @click="registerWithGoogle">
+        <button class="google-btn" @click="goToApp">
           <img src="https://www.google.com/favicon.ico" alt="Google" />
           Continue with Google
         </button>
@@ -83,6 +83,10 @@ const goToConfirm = () => {
   }
   
 };
+
+const goToApp = () => {
+  router.push({ path: '/tabs/tab1' });
+}
 
 
 const handleSubmit = () => {
