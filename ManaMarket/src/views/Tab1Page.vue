@@ -97,58 +97,57 @@ const trendingCards = [
 const newsItems = [
   {
     title: 'Mana Crypt Banned forever from the game.',
-    author: 'olexmartin153',
+    author: 'NacheteGameMaster',
     time: '1h ago',
     thumbnail: 'https://cards.scryfall.io/art_crop/front/4/d/4d960186-4559-4af0-bd22-63baa15f8939.jpg?1727298349'
   },
   {
-    title: 'Mana Crypt Banned forever from the game.',
-    author: 'olexmartin153',
-    time: '1h ago',
-    thumbnail: '/placeholder.svg?height=80&width=80'
+    title: 'Nadu Banned forever from the game.',
+    author: 'DavidePro777',
+    time: '2h ago',
+    thumbnail: 'https://cards.scryfall.io/art_crop/front/9/4/94b67489-5eb0-4406-9bf3-27e50dc632eb.jpg?1731574759'
   },
   {
+    title: 'Dockside Extorsionist Banned forever from the game.',
+    author: 'Alexmartin153',
+    time: '6h ago',
+    thumbnail: 'https://cards.scryfall.io/art_crop/front/5/7/571bc9eb-8d13-4008-86b5-2e348a326d58.jpg?1615499802'
+  },  {
     title: 'Mana Crypt Banned forever from the game.',
-    author: 'olexmartin153',
+    author: 'NacheteGameMaster',
     time: '1h ago',
-    thumbnail: '/placeholder.svg?height=80&width=80'
+    thumbnail: 'https://cards.scryfall.io/art_crop/front/4/d/4d960186-4559-4af0-bd22-63baa15f8939.jpg?1727298349'
   },
   {
-    title: 'Mana Crypt Banned forever from the game.',
-    author: 'olexmartin153',
-    time: '1h ago',
-    thumbnail: '/placeholder.svg?height=80&width=80'
+    title: 'Nadu Banned forever from the game.',
+    author: 'DavidePro777',
+    time: '2h ago',
+    thumbnail: 'https://cards.scryfall.io/art_crop/front/9/4/94b67489-5eb0-4406-9bf3-27e50dc632eb.jpg?1731574759'
   },
   {
+    title: 'Dockside Extorsionist Banned forever from the game.',
+    author: 'Alexmartin153',
+    time: '6h ago',
+    thumbnail: 'https://cards.scryfall.io/art_crop/front/5/7/571bc9eb-8d13-4008-86b5-2e348a326d58.jpg?1615499802'
+  },  {
     title: 'Mana Crypt Banned forever from the game.',
-    author: 'olexmartin153',
+    author: 'NacheteGameMaster',
     time: '1h ago',
-    thumbnail: '/placeholder.svg?height=80&width=80'
+    thumbnail: 'https://cards.scryfall.io/art_crop/front/4/d/4d960186-4559-4af0-bd22-63baa15f8939.jpg?1727298349'
   },
   {
-    title: 'Mana Crypt Banned forever from the game.',
-    author: 'olexmartin153',
-    time: '1h ago',
-    thumbnail: '/placeholder.svg?height=80&width=80'
+    title: 'Nadu Banned forever from the game.',
+    author: 'DavidePro777',
+    time: '2h ago',
+    thumbnail: 'https://cards.scryfall.io/art_crop/front/9/4/94b67489-5eb0-4406-9bf3-27e50dc632eb.jpg?1731574759'
   },
   {
-    title: 'Mana Crypt Banned forever from the game.',
-    author: 'olexmartin153',
-    time: '1h ago',
-    thumbnail: '/placeholder.svg?height=80&width=80'
+    title: 'Dockside Extorsionist Banned forever from the game.',
+    author: 'Alexmartin153',
+    time: '6h ago',
+    thumbnail: 'https://cards.scryfall.io/art_crop/front/5/7/571bc9eb-8d13-4008-86b5-2e348a326d58.jpg?1615499802'
   },
-  {
-    title: 'Mana Crypt Banned forever from the game.',
-    author: 'olexmartin153',
-    time: '1h ago',
-    thumbnail: '/placeholder.svg?height=80&width=80'
-  }, {
-    title: 'Mana Crypt Banned forever from the game.',
-    author: 'olexmartin153',
-    time: '1h ago',
-    thumbnail: '/placeholder.svg?height=80&width=80'
-  },
-  // ... rest of the news items
+
 ];
 </script>
 

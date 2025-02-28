@@ -31,7 +31,7 @@
               <input type="checkbox" v-model="rememberMe" />
               <span>Remember Me</span>
             </label>
-            <a class="forgot-password">Forgot your password?</a>
+            <a class="forgot-password" @click="goToForg">Forgot your password?</a>
           </div>
 
           <!-- Login Button -->
@@ -61,6 +61,10 @@ const router = useRouter();
 
 const goToRegister = () => {
   router.push({ name: 'Register' });
+};
+
+const goToForg = () => {
+  router.push({ name: 'Forgot' });
 };
 
 const goToApp = () => {

@@ -13,6 +13,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/Login.vue'),
   },
   {
+    path: '/forgot',
+    name: 'Forgot', // Usa una cadena para el nombre de la ruta
+    component: () => import('@/views/forgotpassw.vue'),
+  },
+  {
     path: '/register', // Nueva ruta para el registro
     name: 'Register',
     component: () => import('@/views/Register.vue'),
